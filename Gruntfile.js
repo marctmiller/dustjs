@@ -155,6 +155,21 @@ module.exports = function(grunt) {
         }
       }
     },
+    testem: {
+      environment1: {
+        // List of files to attach
+        src: [
+          'tmp/dust-full.min.js',
+          'test/jasmine-test/spec/**/*.js'
+        ],
+        // Options that will be passed to Testem
+        options: {
+          parallel: 8,
+          launch_in_ci: ['PhantomJS', 'Firefox', 'Safari', 'IE7', 'IE8', 'IE9'],
+          launch_in_dev: ['PhantomJS', 'Firefox', 'Safari', 'IE7', 'IE8', 'IE9']
+        }
+      }
+    },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -237,6 +252,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-contrib-testem');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -251,7 +267,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build', ['clean:build', 'jshint', 'shell:buildParser','concat', 'uglify']);
 
-  grunt.registerTask('test', ['clean:specRunner', 'build', 'jasmine', 'shell:oldTests', 'testRhino']);
+  grunt.registerTask('test', ['clean:specRunner', 'build', 'jasmine', 'testem', 'shell:oldTests', 'testRhino']);
   grunt.registerTask('testNode', ['shell:oldTests']);
   grunt.registerTask('testClient', ['build', 'jasmine:allTests:build', 'log:testClient', 'connect:testServer']);
 
